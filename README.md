@@ -1,5 +1,6 @@
-# administrative app
-This is Internship projects
+# act-symmetry
+This is training projects
 
 
-hello
+
+hi
