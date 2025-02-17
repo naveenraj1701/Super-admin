@@ -1,5 +1,5 @@
-# act-symmetry
-This is training projects
+# administrative app
+This is Internship projects
 
 
 hello
