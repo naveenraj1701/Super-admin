@@ -22,6 +22,11 @@ const DashboardLayout = ({ children }) => {
      const [hoveredItem, setHoveredItem] = useState(null);
      const [sidebarVisible, setSidebarVisible] = useState(false);
 
+     const handleLogout = () => {
+          localStorage.removeItem('token');
+          navigate('/');
+     };
+
      const isActive = (path) => location.pathname === path;
 
      const toggleSidebar = () => {
@@ -87,7 +92,7 @@ const DashboardLayout = ({ children }) => {
                          </div>
                          <div
                               className="flex items-center w-[170px] absolute bottom-2 ml-[19px] text-black cursor-pointer transition-transform transform hover:scale-105"
-                              onClick={() => navigate('/')}
+                              onClick={handleLogout}
                          >
                               <img className="w-50% h-50%" src={isActive('/') || hoveredItem === 'logout' ? logoutHover : logout} alt="Logout" />
                               <h1 className="ml-[3px]">LOGOUT</h1>

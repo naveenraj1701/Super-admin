@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Label from '../Components/Label';
@@ -6,12 +6,20 @@ import Button from '../Components/Button';
 import admin_logo from '../assets/images/admin_logo.png';
 import { Eye, EyeOff } from 'lucide-react';
 import './login.css';
+import { useEffect } from 'react';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/dashboard"); 
+    }
+  }, [navigate]);
 
   const handleUser = async (e) => {
     e.preventDefault();
@@ -21,15 +29,12 @@ const Login = () => {
     };
     try {
       const res = await axios.post('http://localhost:4000/login', UserDetail);
-      if (res.data.redirectUrl) {
-        navigate(res.data.redirectUrl);
+       localStorage.setItem('token', res.data.token);
+        navigate('/dashboard');
         alert('Login successful');
-      } else {
-        console.log('Login successful, but no redirect URL provided');
-        
+        console.log(res.data);
       }
-      console.log(res.data);
-    } catch (error) {
+     catch (error) {
       console.error('Error logging in', error);
       alert('Invalid email or password, Login failed');
     }

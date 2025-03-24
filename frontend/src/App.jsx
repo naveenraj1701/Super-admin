@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { use } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './Pages/LoginPage';
 import ForgetPassword from './Pages/ForgetPassword';
@@ -6,8 +6,16 @@ import RegisterPage from './Pages/RegisterPage';
 import DashboardPage from './Pages/dashboardpage';
 import ProfilePage from './Pages/profilepage';
 import DevicePage from './Pages/DevicePage';
+import { useEffect } from 'react';
 
 const App = () => {
+  useEffect(() => {
+    window.history.pushState(null, null, window.location.href);
+    window.onpopstate = function () {
+      window.history.go(1);
+    };
+  }, []);
+
   return (
     <div>
       <Router>
