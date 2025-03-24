@@ -117,7 +117,7 @@ function ProfilePage() {
                 <input
                   className="pl-4 h-9 w-64 border-[1px] rounded-md border-[#9C9C9C] outline-none"
                   type="text"
-                  placeholder="Search"
+                  placeholder="Search here..."
                   value={searchTerm}
                   onChange={handleSearchChange}
                 />

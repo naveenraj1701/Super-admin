@@ -19,7 +19,8 @@ const userSchema = new mongoose.Schema({
     name: String,
     email: { type: String, unique: true },
     password: String
-});
+},
+    { timestamps: true });
 
 const Users = mongoose.model("users", userSchema);
 
@@ -256,9 +257,20 @@ app.get('/users', async (req, res) => {
     res.json(data);
 });
 
+
 app.get('/createdUsers', async (req, res) => {
     try {
         const data = await CreatedUsers.find();
+        res.json(data);
+    } catch (error) {
+        console.error('Error fetching extended users', error);
+        res.status(500).send('Error fetching extended users');
+    }
+});
+
+app.get('/user', async (req, res) => {
+    try {
+        const data = await Users.find().sort({ createdAt: -1 }); // Sort by createdAt in descending order
         res.json(data);
     } catch (error) {
         console.error('Error fetching extended users', error);

@@ -6,6 +6,7 @@ import RegisterPage from './Pages/RegisterPage';
 import DashboardPage from './Pages/dashboardpage';
 import ProfilePage from './Pages/profilepage';
 import DevicePage from './Pages/DevicePage';
+import Reports from './Pages/Reports';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/device-management" element={<DevicePage />} />
+          <Route path='/reports' element={<Reports />} />
         </Routes>
       </Router>
     </div>

@@ -18,7 +18,8 @@
     "express": "^4.21.2",
     "mongoose": "^8.10.2",
     "nodemailer": "^6.10.0",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "react-csv": "^2.2.2"
   },
   "description": ""
 }
