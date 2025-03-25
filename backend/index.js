@@ -19,7 +19,8 @@ const userSchema = new mongoose.Schema({
     name: String,
     email: { type: String, unique: true },
     password: String
-});
+},
+    { timestamps: true });
 
 const Users = mongoose.model("users", userSchema);
 
@@ -66,6 +67,37 @@ const transporter = nodemailer.createTransport({
       user: process.env.EMAIL_USER, // Your Gmail ID
       pass: process.env.EMAIL_PASS, // Your Gmail App Password
     },
+});
+
+const actionLogSchema = new mongoose.Schema({
+    email: { type: String, required: true },
+    action: { type: String, enum: ["Login", "Logout"], required: true },
+    timestamp: { type: Date, default: Date.now },
+});
+
+const ActionLog = mongoose.model("ActionLog", actionLogSchema);
+
+// Log an action (Login or Logout)
+app.post("/log-action", async (req, res) => {
+    const { email, action } = req.body;
+    try {
+        const log = await ActionLog.create({ email, action });
+        res.status(201).json(log);
+    } catch (error) {
+        console.error("Error logging action:", error);
+        res.status(500).json({ error: "Error logging action" });
+    }
+});
+
+// Fetch all action logs
+app.get("/action-logs", async (req, res) => {
+    try {
+        const logs = await ActionLog.find().sort({ timestamp: -1 }); // Sort by most recent
+        res.json(logs);
+    } catch (error) {
+        console.error("Error fetching action logs:", error);
+        res.status(500).json({ error: "Error fetching action logs" });
+    }
 });
 
 app.post('/create', async (req, res) => {
@@ -256,9 +288,20 @@ app.get('/users', async (req, res) => {
     res.json(data);
 });
 
+
 app.get('/createdUsers', async (req, res) => {
     try {
         const data = await CreatedUsers.find();
+        res.json(data);
+    } catch (error) {
+        console.error('Error fetching extended users', error);
+        res.status(500).send('Error fetching extended users');
+    }
+});
+
+app.get('/user', async (req, res) => {
+    try {
+        const data = await Users.find().sort({ createdAt: -1 }); // Sort by createdAt in descending order
         res.json(data);
     } catch (error) {
         console.error('Error fetching extended users', error);

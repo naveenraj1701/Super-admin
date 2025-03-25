@@ -24,21 +24,21 @@ const Login = () => {
   const handleUser = async (e) => {
     e.preventDefault();
     const UserDetail = {
-      email,
-      password,
+        email,
+        password,
     };
     try {
-      const res = await axios.post('http://localhost:4000/login', UserDetail);
-       localStorage.setItem('token', res.data.token);
-        navigate('/dashboard');
-        alert('Login successful');
-        console.log(res.data);
-      }
-     catch (error) {
-      console.error('Error logging in', error);
-      alert('Invalid email or password, Login failed');
+        const res = await axios.post("http://localhost:4000/login", UserDetail);
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("email", email); // Store email for logging actions
+        await axios.post("http://localhost:4000/log-action", { email, action: "Login" }); // Log login action
+        navigate("/dashboard");
+        alert("Login successful");
+    } catch (error) {
+        console.error("Error logging in", error);
+        alert("Invalid email or password, Login failed");
     }
-  };
+};
 
   return (
     <div className="flex items-center justify-center min-h-screen">
