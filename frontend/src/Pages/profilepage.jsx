@@ -56,11 +56,17 @@ function ProfilePage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.post('http://localhost:4000/createExtended', newUser)
-      .then(response => {
+      .then(async (response) => {
         console.log(response.data);
         setData([...data, response.data]);
         setNewUser({ name: '', email: '', address: '', locality: '', statecode: '', password: '', pin: '', status: 'Active' });
         setIsOpen(false);
+
+        // Log "User Created" action
+        await axios.post('http://localhost:4000/log-action', {
+          email: newUser.email,
+          action: "UserCreated",
+        });
       })
       .catch(error => console.error('Error creating user:', error));
   };

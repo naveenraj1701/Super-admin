@@ -7,8 +7,7 @@ import device_man from '../assets/images/device_man.png'
 import device_manHover from '../assets/images/device_white.png'
 import reports from '../assets/images/reports.png'
 import reportsHover from '../assets/images/report_white.png'
-import set_user from '../assets/images/set_user.png'
-import set_userHover from '../assets/images/setuser_white.png'
+
 import logout from '../assets/images/logout.png'
 import admin_logo from '../assets/images/admin_logo.png'
 import notification_head from '../assets/images/notification_head.png'
@@ -144,23 +143,6 @@ const DashboardLayout = ({ children }) => {
                     {isExpanded && <h1 className="ml-[10px]">Reports</h1>}
                 </div>
 
-                <div
-                    className={`flex items-center ${
-                        isActive('/set-user-limits') ? 'bg-black text-white' : 'hover:bg-black text-black hover:text-white'
-                    } ${
-                        isExpanded ? 'w-[220px] justify-start' : 'w-[60px] justify-center'
-                    } h-[44px] rounded-xl cursor-pointer transition-all duration-300 `}
-                    onClick={() => handleNavigation('/set-user-limits')}
-                    onMouseEnter={() => setHoveredItem('set-user-limits')}
-                    onMouseLeave={() => setHoveredItem(null)}
-                >
-                    <img 
-                        className={`w-[18.67px] h-[18.67px] ${isExpanded ? 'ml-[19px]' : ''}`}
-                        src={isActive('/set-user-limits') || hoveredItem === 'set-user-limits' ? set_userHover : set_user} 
-                        alt="Set User Limits" 
-                    />
-                    {isExpanded && <h1 className="ml-[10px]">Set User Limits</h1>}
-                </div>
 
                 <div
                     className={`flex items-center ${

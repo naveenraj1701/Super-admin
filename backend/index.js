@@ -48,8 +48,8 @@ const NewDeviceUsers = mongoose.model("newdevice", newDeviceSchema);
 const mappingDeviceSchema = new mongoose.Schema({
     username: { type: String, required: true },
     addedDevice: { type: String, required: true },
-    status: { type: String, enum: ['Active', 'Inactive', 'Block'], default: 'Active' }
-});
+    status: { type: String, enum: ['Active', 'Inactive', 'Block'], default: 'Active' },
+}, { timestamps: true }); // Add timestamps for createdAt and updatedAt
 
 const MappingDevice = mongoose.model("mappingDevice", mappingDeviceSchema);
 
@@ -71,7 +71,7 @@ const transporter = nodemailer.createTransport({
 
 const actionLogSchema = new mongoose.Schema({
     email: { type: String, required: true },
-    action: { type: String, enum: ["Login", "Logout"], required: true },
+    action: { type: String, enum: ["Login", "Logout", "UserCreated", "DeviceMapped"], required: true }, // Added "DeviceMapped"
     timestamp: { type: Date, default: Date.now },
 });
 
@@ -163,6 +163,10 @@ app.post('/mappingDevice', async (req, res) => {
     try {
         const newMapping = new MappingDevice({ username, addedDevice, status });
         await newMapping.save();
+
+        // Log the "DeviceMapped" action
+        await ActionLog.create({ email: username, action: "DeviceMapped" });
+
         res.status(201).json({ message: "Mapping created successfully!", mapping: newMapping });
     } catch (error) {
         console.error("Error creating mapping:", error);

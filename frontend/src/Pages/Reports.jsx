@@ -9,26 +9,36 @@ const Reports = () => {
     const [allData, setAllData] = useState([]); // Store all data
     const [filteredData, setFilteredData] = useState([]); // Store filtered data
 
-    // Fetch data from `/user` and `/action-logs` APIs
+    // Fetch data from `/user`, `/action-logs`, and `/mappingDevice` APIs
     const fetchData = async () => {
         try {
-            const [userResponse, actionLogsResponse] = await Promise.all([
+            const [userResponse, actionLogsResponse, mappingResponse] = await Promise.all([
                 axios.get("http://localhost:4000/user"), // Fetch user data
                 axios.get("http://localhost:4000/action-logs"), // Fetch action logs
+                axios.get("http://localhost:4000/mappingDevice"), // Fetch device mappings
             ]);
 
             // Combine user data and action logs
-            const combinedData = actionLogsResponse.data.map((log, index) => {
-                const user = userResponse.data.find((u) => u.email === log.email) || {};
-                return {
-                    name: user.name || "Unknown", // Use "Unknown" if the user is not found
-                    action: log.action,
-                    timestamp: new Date(log.timestamp).toLocaleString(),
-                };
-            });
+            const combinedData = actionLogsResponse.data
+                .filter((log) => log.action !== "DeviceMapped") // Exclude "DeviceMapped" from action logs
+                .map((log) => {
+                    const user = userResponse.data.find((u) => u.email === log.email) || {};
+                    return {
+                        name: user.name || "Unknown",
+                        action: log.action === "UserCreated" ? "User Created" : log.action,
+                        timestamp: new Date(log.timestamp).toLocaleString(),
+                    };
+                });
 
-            setAllData(combinedData); // Store all data
-            setFilteredData(combinedData); // Initialize filtered data
+            // Add device mapping actions
+            const mappingData = mappingResponse.data.map((mapping) => ({
+                name: mapping.username,
+                action: "Device Mapped",
+                timestamp: new Date(mapping.createdAt).toLocaleString(), // Use correct timestamp
+            }));
+
+            setAllData([...combinedData, ...mappingData]); // Combine all data
+            setFilteredData([...combinedData, ...mappingData]); // Initialize filtered data
         } catch (error) {
             console.error("Error fetching data:", error);
         }
