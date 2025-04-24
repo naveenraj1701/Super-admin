@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import vector from '../assets/images/vector.png'
 import vectorHover from '../assets/images/deviceman_white.png'
 import profile from '../assets/images/profile.png'
@@ -13,7 +14,6 @@ import admin_logo from '../assets/images/admin_logo.png'
 import notification_head from '../assets/images/notification_head.png'
 import profile_head from '../assets/images/profile_head.png'
 // import DashboardCard from '../Components/DashboardCard'
-import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios'
 
 const DashboardLayout = ({ children }) => {
