@@ -1,9 +1,11 @@
-require("dotenv").config();
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const bcrypt = require('bcrypt');
-const nodemailer = require("nodemailer");
+import dotenv from "dotenv";
+import express from "express";
+import mongoose from "mongoose";
+import cors from "cors";
+import bcrypt from "bcrypt";
+import nodemailer from "nodemailer";
+
+dotenv.config();
 
 const app = express();
 const port = 4000;
